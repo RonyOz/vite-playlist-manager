@@ -39,15 +39,16 @@ export default function AddSongPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data && Array.isArray(data.data) && data.data.length > 0) {
-          setSearchResults(data.data);
+          const filtered = data.data.filter(item => item.type === "track");
+          if (filtered.length > 0) {
+            setSearchResults(filtered);
+          } else {
+            setSearchError("No se encontraron canciones para la búsqueda.");
+          }
         } else {
           setSearchError("No se encontraron canciones para la búsqueda.");
         }
       })
-      .catch((error) => {
-        setSearchError("Error buscando canciones.");
-      })
-      .finally(() => setSearchLoading(false));
   };
 
   const handleAddTrack = (track) => {
